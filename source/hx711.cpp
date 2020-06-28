@@ -121,9 +121,35 @@ int32_t HX711::readAverage()
 #endif
 }
 
+int32_t HX711::readMedian()
+{
+#ifdef __arm__
+  this->mIsMedian = true;
+  int8_t times = this->mTimes;
+
+  // TODO: find the sweetspot for best CPU usage and sensor resonse time.
+  // Increasing the sleep time reduces CPU usage yet it might reduce the read speed too.
+  // Fİgure out the sensor response time and set it accordingly.
+  while(this->mTimes >= 1) usleep(100);
+  this->mIsMedian = false;
+
+  // TODO: Calculate median, then set mMedianData
+
+  return this->mMedianData;
+#else
+  return 0;
+#endif
+}
+
+
 int32_t HX711::getRawValue()
 {
   return readAverage() - mOffset;
+}
+
+int32_t HX711::getRawValueMedian()
+{
+  return readMedian() - mOffset;
 }
 
 float HX711::getUnits(uint8_t times)
@@ -131,6 +157,14 @@ float HX711::getUnits(uint8_t times)
   this->mTimes = times;
   return getRawValue() / mScale;
 }
+
+
+float HX711::getUnitsMedian(uint8_t times)
+{
+  this->mTimes = times;
+  return getRawValueMedian() / mScale;
+}
+
 
 void HX711::tare(uint8_t times)
 {

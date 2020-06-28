@@ -11,6 +11,7 @@ void HX711Wrapper::Init(Napi::Env env, Napi::Object exports)
     InstanceMethod("setOffset", &HX711Wrapper::setOffset),
     InstanceMethod("tare", &HX711Wrapper::tare),
     InstanceMethod("getUnits", &HX711Wrapper::getUnits),
+    InstanceMethod("getUnitsMedian", &HX711Wrapper::getUnitsMedian),
     InstanceMethod("getScale", &HX711Wrapper::getScale),
     InstanceMethod("getOffset", &HX711Wrapper::getOffset),
     InstanceMethod("powerDown", &HX711Wrapper::powerDown),
@@ -81,6 +82,16 @@ Napi::Value HX711Wrapper::getUnits(const Napi::CallbackInfo &info)
 
   uint8_t timesArg = info[0].IsUndefined() ? 10 : info[0].ToNumber();
   float value = mSensor->getUnits(timesArg);
+
+  return Napi::Number::New(env, value);
+}
+
+Napi::Value HX711Wrapper::getUnitsMedian(const Napi::CallbackInfo &info)
+{
+  Napi::Env env = info.Env();
+
+  uint8_t timesArg = info[0].IsUndefined() ? 10 : info[0].ToNumber();
+  float value = mSensor->getUnitsMedian(timesArg);
 
   return Napi::Number::New(env, value);
 }
