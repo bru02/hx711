@@ -5,6 +5,7 @@ declare class HX711 {
   setScale(scale: number): void
   setOffset(offset: number): void
   tare(times?: number): void
+  setGain(gain?: number): void
   getUnits(times?: number): number
   getOffset(): number
   getScale(): number
