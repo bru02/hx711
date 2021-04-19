@@ -113,7 +113,7 @@ int32_t HX711::readAverage()
   // TODO: find the sweetspot for best CPU usage and sensor resonse time.
   // Increasing the sleep time reduces CPU usage yet it might reduce the read speed too.
   // Fİgure out the sensor response time and set it accordingly.
-  while(this->mTimes >= 1) usleep(100);
+  while(this->mTimes >= 1) usleep(40);
 
   return this->mSum / times;
 #else
